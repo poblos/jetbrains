@@ -1,0 +1,2385 @@
+Prefix,Suffix,Expected Middle,Model Completion,Exact Match,Edit Similarity,CHRF Score,ROUGE-L,My Score
+,"
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","package pl.edu.mimuw.matrix;
+",.getClass().equals(this.getClass()) {,0,0.1351351351351351,0.09004987719461882,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+","
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","    }
+","        }
+    }
+
+    public IDoubleMatrix",0,0.14634146341463417,0.055555555555555636,0.0,0.7
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+","            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","            int length2 = elems2.size();
+",            for (Pair elem : elems1) {,0,0.4390243902439024,0.15548308717820267,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+","                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","                    elems3.add(newPair);
+",                for (Pair elem : elems1) {,0,0.45238095238095233,0.2462167606043515,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+","    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","        }
+","        }
+    }
+
+    public IDoubleMatrix",0,0.24390243902439024,0.055555555555555636,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+","        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","            return super.plus(other);
+","            return super.plusToList(other);
+       ",0,0.7450980392156863,0.85284782914762,0.75,0.8
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+","        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","        }
+","        }
+        return (this.elems[row",0,0.25,0.05376344086021514,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+","    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","        return (resMatrix);
+","        return resMatrix;
+",0,0.9285714285714286,0.6458113241448629,1.0,1.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+","        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+                row.append(""0 ... 0 "");
+            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","        }
+","            return (super.toString());
+        }
+       ",0,0.1785714285714286,0.0476190476190477,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.ArrayList;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Diagonal extends SingleList {
+    Diagonal(ArrayList<Pair> elems, int size) {
+        this.elems = elems;
+        this.shape = matrix(size, size);
+    }
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        if (!other.getClass().equals(this.getClass())) {
+            return super.times(other);
+        } else {
+            ArrayList<Pair> elems1 = this.elems;
+            int length1 = elems1.size();
+            int i1 = 0;
+            ArrayList<Pair> elems2 = ((Diagonal) other).getElems();
+            int length2 = elems2.size();
+            int i2 = 0;
+            ArrayList<Pair> elems3 = new ArrayList<>();
+            while (i1 < length1 && i2 < length2) {
+                int ix1 = elems1.get(i1).index();
+                double v1 = elems1.get(i1).value();
+                int ix2 = elems2.get(i2).index();
+                double v2 = elems2.get(i2).value();
+                if (ix1 == ix2) {
+                    Pair newPair = new Pair(ix1, v1 * v2);
+                    elems3.add(newPair);
+                    i1++;
+                    i2++;
+                } else if (ix1 < ix2) {
+                    i1++;
+                } else {
+                    i2++;
+                }
+            }
+            return (new Diagonal(elems3, this.shape().rows));
+        }
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        ArrayList<Pair> elems = super.timesList(scalar);
+        return (new Diagonal(elems, this.shape().rows));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        if (other.getClass() != this.getClass()) {
+            return super.plus(other);
+        } else {
+            ArrayList<Pair> elems2 = super.plusToList(other);
+            return (new Diagonal(elems2, this.shape().rows));
+        }
+    }
+
+    public double get(int row, int column) {
+        if (row != column) {
+            return (0);
+        }
+        return (super.get(row, column));
+    }
+
+    public double[][] data() {
+        double[][] resMatrix = new double[this.shape().rows][this.shape().columns];
+        for (Pair elem : this.elems) {
+            int k = elem.index();
+            resMatrix[k][k] = elem.value();
+        }
+        return (resMatrix);
+    }
+
+    public double normOne() {
+        return (super.normInfinity());
+    }
+
+    public String toString() {
+        if (this.shape().rows < 4) {
+            return (super.toString());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.shape().rows; i++) {
+            double value = this.get(i, i);
+            if (value == 0.0) {
+                sb.append(""0 ... 0\n"");
+                continue;
+            }
+            StringBuilder row = new StringBuilder();
+            if (i > 2) {
+","            } else {
+                row.append(""0 "".repeat(i));
+            }
+            row.append(value);
+            if (i < this.shape().rows - 3) {
+                row.append("" 0 ... 0"");
+            } else {
+                row.append("" 0 "".repeat(Math.max(0, this.shape().rows - 1 - i)));
+            }
+            sb.append(row).append('\n');
+        }
+        return (""Diagonalna "" + this.shape().toString() + ""\n"" + sb);
+    }
+}
+","                row.append(""0 ... 0 "");
+","                row.append(""0 "".repeat(i",0,0.775,0.6111070033673951,0.6666666666666665,0.7
+,"
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","package pl.edu.mimuw.matrix;
+",".shape().rows, other.shape().columns",0,0.08333333333333337,0.09592326139088737,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+","        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","    public IDoubleMatrix times(IDoubleMatrix other) {
+",    public IDoubleMatrix times(double scalar,0,0.6851851851851851,0.6047059712909699,0.6,0.6
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+","                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","                }
+",                matrix3[i][j] = sum,0,0.4571428571428572,1e-16,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+","        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","    public IDoubleMatrix times(double scalar) {
+",    public IDoubleMatrix times(double scalar,0,0.9166666666666666,0.9503030418192627,1.0,0.9
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+","        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","        }
+","        }
+        return (new Full(matrix2",0,0.23809523809523814,0.05208333333333342,0.0,0.1
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+","                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","            for (int j = 0; j < this.shape().columns; j++) {
+",            for (int j = 0; j,0,0.47540983606557374,0.27922148235822297,0.7142857142857143,0.8
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+","        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","    public IDoubleMatrix plus(double scalar) {
+",    public IDoubleMatrix minus(double scalar,0,0.851063829787234,0.8164496819532175,0.8000000000000002,0.9
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+","        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","        }
+","        }
+        return (new Full(matrix2",0,0.23809523809523814,0.05208333333333342,0.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+","    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (double[] s : this.data()) {
+            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","
+","    }
+
+    public IDoubleMatrix minus(",0,0.02631578947368418,1e-16,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import java.util.Arrays;
+
+public abstract class DoubleMatrix implements IDoubleMatrix {
+    protected Shape shape;
+
+    public IDoubleMatrix times(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][other.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < other.shape().columns; j++) {
+                double sum = 0;
+                for (int k = 0; k < this.shape().columns; k++) {
+                    sum += this.data()[i][k] * other.data()[k][j];
+                }
+                matrix3[i][j] = sum;
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix times(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] * scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix plus(IDoubleMatrix other) {
+        double[][] matrix3 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix3[i][j] = this.data()[i][j] + other.data()[i][j];
+            }
+        }
+        return (new Full(matrix3));
+    }
+
+    public IDoubleMatrix plus(double scalar) {
+        double[][] matrix1 = this.data();
+        double[][] matrix2 = new double[this.shape().rows][this.shape().columns];
+        for (int i = 0; i < this.shape().rows; i++) {
+            for (int j = 0; j < this.shape().columns; j++) {
+                matrix2[i][j] = matrix1[i][j] + scalar;
+            }
+        }
+        return (new Full(matrix2));
+    }
+
+    public IDoubleMatrix minus(IDoubleMatrix other) {
+        return (plus(other.times(-1.0)));
+    }
+
+    public IDoubleMatrix minus(double scalar) {
+        return (plus(-scalar));
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+","            sb.append(Arrays.toString(s).replaceAll(""[\\[\\],]"", """")).append('\n');
+        }
+        return (""Rozmiar: "" + this.shape().toString() + ""\n"" + sb);
+    }
+
+    public Shape shape() {
+        return shape;
+    }
+}
+","        for (double[] s : this.data()) {
+",        sb.append(Arrays.toString(this,0,0.24390243902439024,0.1430625812678555,0.20000000000000004,0.0
+,"
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","package pl.edu.mimuw.matrix;
+",".shape().rows, row) {
+            this",0,0.052631578947368474,0.0563909774436091,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+","
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","    double[][] data;
+",    double[][] values = new DoubleMatrix(1,0,0.40476190476190477,0.5539926345195835,0.28571428571428575,0.3
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+","    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","        this.data = values;
+",        for (int row = 0; row,0,0.3448275862068966,0.03944773175542415,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+","
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","    }
+","    }
+
+    public double getRow(int row",0,0.15384615384615385,0.0476190476190477,0.0,0.2
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+","    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","
+","    }
+
+    public double normOne() {
+       ",0,0.022727272727272707,1e-16,0.0,0.0
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+","                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","            for (int row = 0; row < this.shape().rows; row++) {
+","                for (double value : column) {
+",0,0.375,0.07581839974917777,0.15384615384615383,0.2
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+","    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","        return (max);
+","        return (max);
+",1,1.0,1.0,1.0,1.0
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+","            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","        for (double[] row : this.data) {
+",        for (double[] row : this.data,0,0.9024390243902439,0.9255568843354042,1.0,0.9
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+","        }
+        return (max);
+    }
+
+    public double frobeniusNorm() {
+        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","            max = Math.max(sum, max);
+","            max = Math.max(sum, max",0,0.9210526315789473,0.9059954177855766,1.0,0.9
+"package pl.edu.mimuw.matrix;
+
+import static pl.edu.mimuw.matrix.Shape.matrix;
+
+public class Full extends DoubleMatrix {
+    double[][] data;
+
+    Full(double[][] values) {
+        int length = values[0].length;
+        this.shape = matrix(values.length, length);
+        this.data = values;
+    }
+
+    public double get(int row, int column) {
+        return (data[row][column]);
+    }
+
+    public double[][] data() {
+        return (data);
+    }
+
+    public double normOne() {
+        double max = 0;
+        for (int column = 0; column < this.shape().columns; column++) {
+            double sum = 0;
+            for (int row = 0; row < this.shape().rows; row++) {
+                sum += Math.abs(data[row][column]);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+    public double normInfinity() {
+        double max = 0;
+        for (double[] row : this.data) {
+            double sum = 0;
+            for (double value : row) {
+                sum += Math.abs(value);
+            }
+            max = Math.max(sum, max);
+        }
+        return (max);
+    }
+
+","        double k = 0;
+        for (double[] row : this.data) {
+            for (double value : row) {
+                k += Math.pow(value, 2.0);
+            }
+        }
+        return (Math.sqrt(k));
+    }
+}
+","    public double frobeniusNorm() {
+","    public double normTwo() {
+        double max",0,0.45833333333333337,0.47340895253956033,0.5,0.5
